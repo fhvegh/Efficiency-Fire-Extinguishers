@@ -8,3 +8,4 @@ As this is a project involving the safety of people, the target used will be 90%
 The model will produce a result of one class: fire extinguished or not, so it is a supervised
 classification model.
 </p>
+<p>The technology used was R programming and statistics software.</p>
