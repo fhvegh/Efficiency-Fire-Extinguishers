@@ -9,3 +9,6 @@ The model will produce a result of one class: fire extinguished or not, so it is
 classification model.
 </p>
 <p>The technology used was R programming and statistics software.</p>
+<br>
+<p>To open the troubleshooting program, paste this script into your RStudio. Don't forget to configure setwd() with the path to the <strong>.R file</strong>.</p>
+<br>
