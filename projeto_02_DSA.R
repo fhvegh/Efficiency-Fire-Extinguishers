@@ -23,6 +23,7 @@ setwd("C:/Users/fhveg/OneDrive/Documentos/Git_Projects/Efficiency-Fire-Extinguis
 library(readxl)
 library(ggplot2)
 library(dplyr)
+library(reshape2)
 library(corrplot)
 library(GGally)
 library(caret)
@@ -35,22 +36,14 @@ View(dados)
 str(dados)
 dim(dados)
 
-# Retirando uma amostra dos dados para testes posteriores:
-novos.dados <- dados[8000:8500,]
-
-# Foi retirado uma amostra do dataset que não fará parte do trainamento.
-# Reagrupando os dados restantes:
-
-dados.2 <- rbind(dados[1:7999,],dados[8501:17442,])
-
 # Adicionando uma coluna com valores de extinção ou não do fogo:
-dados.2$STATUS_STRING <- c(ifelse(dados.2$STATUS == 0,yes = "Not_Extint",no = "Extint"))
+dados$STATUS_STRING <- c(ifelse(dados$STATUS == 0,yes = "Not_Extint",no = "Extint"))
 
-dim(dados.2)
-View(dados.2)
+dim(dados)
+View(dados)
 
 # Valores nulos:
-sum(is.na(dados.2))
+sum(is.na(dados))
 
 # -----------------------------------------------------------------------------
 
@@ -60,28 +53,28 @@ sum(is.na(dados.2))
 table(dados$SIZE)
 table(dados$STATUS)
 table(dados$FUEL)
-table(dados.2$DISTANCE)
+table(dados$DISTANCE)
 
 # Criando a variável STATUS_STRING para auxiliar na geração dos gráficos:
-dados.2$STATUS_STRING <- as.factor(dados.2$STATUS_STRING)
-str(dados.2)
+dados$STATUS_STRING <- as.factor(dados$STATUS_STRING)
+str(dados)
 
 # Gráfico de barras da variável FUEL:
-ggplot(dados.2, aes(x=FUEL)) + 
+ggplot(dados, aes(x=FUEL)) + 
   geom_bar(color="black", fill="#845EC2")
 
 # Gráfico de barras da variável SIZE:
-ggplot(dados.2, aes(x=as.factor(SIZE) )) +
+ggplot(dados, aes(x=as.factor(SIZE) )) +
   geom_bar(color="black", fill="#2C73D2")
 
 # Gráfico de barras da variável STATUS:
-ggplot(dados.2, aes(x=as.factor(STATUS) )) +
+ggplot(dados, aes(x=as.factor(STATUS) )) +
   geom_bar(color="black", fill="#008F7A" )
 
 
 # Relação entre variáveis FUEL e STATUS:
 # Criando a tabela de relacionamento:
-tb_fuel <- table(dados.2$FUEL,dados.2$STATUS_STRING)
+tb_fuel <- table(dados$FUEL,dados$STATUS_STRING)
 tb_fuel
 tb_fuel.df <- as.data.frame(tb_fuel)
 colnames(tb_fuel.df) <- c("FUEL","CONDITION","FREQUENCY")
@@ -98,14 +91,14 @@ ggplot(tb_fuel.df, aes(fill=CONDITION, y=FREQUENCY, x=FUEL)) +
 # Avaliando o relacionamento das variáveis categóricas FUEL e STATUS:
 
 # Porcentagem do relacionamento entre FUEL e STATUS:
-prop.table(table(dados.2$FUEL,dados.2$STATUS),margin = 2)
+prop.table(table(dados$FUEL,dados$STATUS),margin = 2)
 
 # Porcentagem dos valores totais entre FUEL e STATUS:
-prop.table(marginSums(table(dados.2$FUEL,dados.2$STATUS),margin = 1))
+prop.table(marginSums(table(dados$FUEL,dados$STATUS),margin = 1))
 
 # Reunindo as informações acima em uma única tabela:
-prop.fuel <- prop.table(table(dados.2$FUEL,dados.2$STATUS_STRING),margin = 2)
-prop.total <- prop.table(marginSums(table(dados.2$FUEL,dados.2$STATUS_STRING),margin = 1))
+prop.fuel <- prop.table(table(dados$FUEL,dados$STATUS_STRING),margin = 2)
+prop.total <- prop.table(marginSums(table(dados$FUEL,dados$STATUS_STRING),margin = 1))
 
 # Combinando as tabelas:
 prop.fuel.total <- cbind(prop.fuel,prop.total)
@@ -119,7 +112,6 @@ df.fuel.total
 chisq.test(table(dados.2$FUEL,dados.2$STATUS))
 # Resultado de 115.9 do x-squared e p-value muito pequeno
 # Indica que há relação, porém fraca, entre as variáveis
-
 
 
 # Análise Estatística das Variáveis Numéricas
