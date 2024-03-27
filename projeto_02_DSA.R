@@ -17,7 +17,7 @@
 
 
 # Diretório de trabalho:
-setwd("C:/Users/fhveg/OneDrive/Documentos/Git_Projects/Efficiency-Fire-Extinguishers")
+setwd("Seu diretório de dos arquivos aqui!")
 
 # Pacotes usados no desenvolvimento do projeto:
 library(readxl)
@@ -109,7 +109,7 @@ df.fuel.total <- as.data.frame(prop.fuel.total)
 df.fuel.total
 
 # Cálculo do qui-quadrado para as duas variáveis FUEL e STATUS:
-chisq.test(table(dados.2$FUEL,dados.2$STATUS))
+chisq.test(table(dados$FUEL,dados$STATUS))
 # Resultado de 115.9 do x-squared e p-value muito pequeno
 # Indica que há relação, porém fraca, entre as variáveis
 
@@ -119,7 +119,7 @@ chisq.test(table(dados.2$FUEL,dados.2$STATUS))
 # Análise das variáveis quantitativas em relação a variável STATUS:
 
 # Análise da variável SIZE em relação a variável alvo STATUS
-tb_size <- table(dados.2$SIZE,dados.2$STATUS_STRING)
+tb_size <- table(dados$SIZE,dados$STATUS_STRING)
 tb_size <- as.data.frame(tb_size)
 colnames(tb_size) <- c("SIZE","CONDITION","FREQUENCY")
 tb_size
@@ -129,7 +129,7 @@ ggplot(tb_size, aes(fill=CONDITION, y=FREQUENCY, x=SIZE)) +
   geom_bar(position="stack", stat="identity")
 
 # Análise da variável DISTANCE e STATUS_STRING:
-tb_dist <- table(dados.2$DISTANCE,dados.2$STATUS_STRING)
+tb_dist <- table(dados$DISTANCE,dados$STATUS_STRING)
 tb_dist
 
 # Gráfico boxplot da relação da variável STATUS_STRING com FREQUENCY:
@@ -139,19 +139,19 @@ dados.2 %>%
   ggtitle(label = "STATUS VS FREQUENCY") 
 
 # Gráfico boxplot da relação da variável STATUS com AIRFLOW:
-dados.2 %>%
+dados %>%
   ggplot( aes(x=STATUS_STRING, y=AIRFLOW, fill=STATUS_STRING)) +
   geom_boxplot() +
   ggtitle(label = "STATUS VS AIRFLOW") 
 
 # Gráfico boxplot da relação da variável STATUS com DESIBEL:
-dados.2 %>%
+dados %>%
   ggplot( aes(x=STATUS_STRING, y=DESIBEL, fill=STATUS_STRING)) +
   geom_boxplot() +
   ggtitle(label = "STATUS VS DESIBEL") 
 
 # Gráfico de correlação das variáveis quantitativas:
-dados.num <- dados.2[,-c(2,7,8)]
+dados.num <- dados[,-c(2,7,8)]
 dados.num
 
 # Calculando a correlação:
@@ -166,12 +166,12 @@ ggcorr(plot.cor, method = c("everything", "pearson"))
 ### PRÉ-PROCESSAMENTO
 
 # Criando variáveis dummy para variável FUEL:
-dummye <- dummyVars(STATUS ~ FUEL,data = dados.2)
-fuel.dummye <- predict(dummye,newdata = dados.2)
+dummye <- dummyVars(STATUS ~ FUEL,data = dados)
+fuel.dummye <- predict(dummye,newdata = dados)
 head(fuel.dummye)
 
 # Agrupando as variáveis dummy ao dataset dados.2:
-dados.3 <- cbind(fuel.dummye,dados.2)
+dados.3 <- cbind(fuel.dummye,dados)
 dados.3$FUEL <- NULL
 dados.3$STATUS_STRING <- NULL
 head(dados.3)
@@ -181,7 +181,7 @@ dados.3 <- scale(dados.3[c("DISTANCE","DESIBEL","AIRFLOW","FREQUENCY")])
 head(dados.3)
 
 # Combinando com as variáveis dummy:
-dados <- cbind(fuel.dummye,dados.3,dados.2$STATUS)
+dados <- cbind(fuel.dummye,dados.3,dados$STATUS)
 dados <- as.data.frame(dados)
 colnames(dados)[which(colnames(dados) == 'V9')] <- 'STATUS'
 head(dados)
@@ -302,7 +302,10 @@ summary(prev1.gbm)
 
 # -------------------------------------------------------------------------------
 
-
+# Conclusão:
+    
+# O objetivo de alcançar uma acurácia de 90% foi atingida o que proporciona
+# uma modelagem segura ao inserirmos novos dados.
 
 
 

@@ -11,6 +11,8 @@ The model will produce a result of one class: fire extinguished or not, so it is
 classification model.
 </p>
 <p>The technology used was R programming and statistics software.</p>
-<br>
-<p>To open the program, paste this script into your RStudio. Don't forget to configure setwd() with the path to the <strong>.R file</strong>.</p>
-<br>
+<p>To open the program, paste this script into your RStudio. Don't forget to configure setwd() with the path to the <strong>.R file</strong>.
+</p>
+<p><strong>This project was proposed by the Data Science Academy in the Big Data Analytics with R and Microsoft Azure course.</strong>
+</p>
+
