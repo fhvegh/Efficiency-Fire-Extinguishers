@@ -13,6 +13,6 @@ classification model.
 <p>The technology used was R programming and statistics software.</p>
 <p>To open the program, paste this script into your RStudio. Don't forget to configure setwd() with the path to the <strong>.R file</strong>.
 </p>
-<p><strong>This project was proposed by the Data Science Academy in the Big Data Analytics with R and Microsoft Azure course.</strong>
+<p><strong>This project was proposed by the <em>Data Science Academy</em> in the Big Data Analytics with R and Microsoft Azure course.</strong>
 </p>
 
